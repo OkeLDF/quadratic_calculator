@@ -6,8 +6,6 @@
 
 #include "types_and_macros.h"
 
-int delete_user(USER user, char filename[]);
-
 void save_on_history (EQUATION save, char filename[FN_SIZE], EQUATION *lastops_history);
 
 void print_history(int outnum, int num_of_ops, char filename[FN_SIZE]);

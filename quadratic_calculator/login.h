@@ -13,3 +13,5 @@ int log_on_user(USER *user, int count, char filename[]);
 int create_file(char filename[]);
 
 int edit_user (USER user, char filename[]);
+
+int delete_user(USER user, char filename[]);

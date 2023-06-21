@@ -56,5 +56,6 @@ int main(){
 		        
     } while(r!=0);
     
+    system("cls");
     return 0;
 }
