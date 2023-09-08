@@ -1,11 +1,11 @@
-# Project: Project1
+# Project: quadratic_calculator
 # Makefile created by Dev-C++ 5.11
 
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o quadratic_calculator.o history.o
-LINKOBJ  = main.o quadratic_calculator.o history.o
+OBJ      = main.o quadratic_calculator.o history.o login.o menus.o
+LINKOBJ  = main.o quadratic_calculator.o history.o login.o menus.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -32,3 +32,9 @@ quadratic_calculator.o: quadratic_calculator.cpp
 
 history.o: history.cpp
 	$(CPP) -c history.cpp -o history.o $(CXXFLAGS)
+
+login.o: login.cpp
+	$(CPP) -c login.cpp -o login.o $(CXXFLAGS)
+
+menus.o: menus.cpp
+	$(CPP) -c menus.cpp -o menus.o $(CXXFLAGS)

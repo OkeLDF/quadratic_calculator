@@ -1,12 +1,14 @@
 #pragma once
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <math.h>
 
-#include "def_macros_and_types.h"
-#include "history.h"
+#include "types_and_macros.h"
 
-void qc_insert_coefficients (float *A, float *B, float *C);
+EQUATION insert_coefficients();
 
-void qc_find_roots (float A, float B, float C);
+EQUATION find_roots(EQUATION eq);
+
+void print_results(EQUATION eq);

@@ -1,6 +1,6 @@
 [Project]
 FileName=quadratic_calculator.dev
-Name=Project1
+Name=quadratic_calculator
 Type=1
 Ver=2
 ObjFiles=
@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=6
+UnitCount=10
 
 [VersionInfo]
 Major=1
@@ -60,8 +60,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
-FileName=quadratic_calculator.h
+[Unit2]
+FileName=types_and_macros.h
 CompileCpp=1
 Folder=header
 Compile=1
@@ -70,7 +70,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit2]
+[Unit3]
 FileName=quadratic_calculator.cpp
 CompileCpp=1
 Folder=source
@@ -81,6 +81,16 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
+FileName=quadratic_calculator.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit5]
 FileName=history.cpp
 CompileCpp=1
 Folder=source
@@ -90,7 +100,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit5]
+[Unit6]
 FileName=history.h
 CompileCpp=1
 Folder=header
@@ -100,8 +110,38 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit6]
-FileName=def_macros_and_types.h
+[Unit7]
+FileName=login.cpp
+CompileCpp=1
+Folder=source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit8]
+FileName=login.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=menus.cpp
+CompileCpp=1
+Folder=source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
+FileName=menus.h
 CompileCpp=1
 Folder=header
 Compile=1

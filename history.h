@@ -1,28 +1,19 @@
 #pragma once
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
-#include "quadratic_calculator.h"
-#include "def_macros_and_types.h"
+#include "types_and_macros.h"
 
-void hy_create_temp_history();
+int delete_user(USER user, char filename[]);
 
-void hy_request_user();
+void save_on_history (EQUATION save, char filename[FN_SIZE], EQUATION *lastops_history);
 
-int hy_create_user();
+void print_history(int outnum, int num_of_ops, char filename[FN_SIZE]);
 
-int hy_log_on_user();
+void clean_history (EQUATION *eq, char filename[FN_SIZE]);
 
-int hy_edit_user();
+EQUATION take_equation(int n, char filename[FN_SIZE]);
 
-void hy_delete_user();
-
-void hy_save_on_history (EQ_INFO save);
-
-int hy_access_history (float *A, float *B, float *C);
-
-void hy_delete_history ();
-
-void hy_take_equation(int n, float *A, float *B, float *C);
+int get_valid_num (int num_of_ops);
