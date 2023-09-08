@@ -34,7 +34,9 @@ EQUATION find_roots(EQUATION eq){
     }
 	
 	if(eq.DELTA<0){
-		eq.roots_qt = 0;
+		eq.X1 = -eq.B/eq.A;
+    	eq.X2 = sqrt(-eq.DELTA);
+		eq.roots_qt = 2;
         return eq;
     }
     
@@ -62,7 +64,10 @@ void print_results(EQUATION eq){
     }
 	
 	if(eq.DELTA<0){
-		printf("Impossivel calucar a raiz! (discriminante = %.2f) \a", eq.DELTA);
+		printf("X = %.2f + %.2f * i ou\n", eq.X1, eq.X2);
+		printf(" > X = %.2f - %.2f * i \n\n", eq.X1, eq.X2);
+		printf(" > Delta = %.2f", eq.DELTA);
+		printf("\n\n obs.: nao ha raizes reais! (i = sqrt(-1))\a");
 		CLOSE_MENU(2);
         return;
     }

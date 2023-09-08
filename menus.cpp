@@ -7,11 +7,12 @@ void sign_up_menu(USER *user, char list_of_users[]){
 	
 	do{
 		printf("\n Entre na conta ou crie uma nova:\n\n (1) Entrar.\n (2) Criar.\n (0) Sair.\n\n R: ");
-		scanf("%d", &r);
+		fflush(stdin);
+		if(scanf("%d",&r)==0) r=-1;
 		fflush(stdin);
 		
 		switch(r){
-			case 0: exit(0);
+			case 0: system("cls"); exit(0);
 			
 			case 1:	r = login_menu(user, list_of_users); break;
 				
@@ -92,6 +93,7 @@ int login_menu(USER *user, char filename[]){
 
 int user_info_menu (USER *user, char filename[]){
 	FILE *list_of_users_file;
+	char command_DEL[FN_SIZE+4]="DEL ";
 	int r;
 	
 	system("cls");
@@ -121,7 +123,16 @@ int user_info_menu (USER *user, char filename[]){
 				
 				break;
 			
-			case 3: delete_user(*user, filename); return USER_REMOVED;
+			case 3:
+				printf("\n > Confirme com 1: ");
+				if(!scanf("%d",&r)) break;
+				if(r!=1) break;
+				
+				delete_user(*user, filename);
+				strcat(command_DEL, (*user).history);
+				system(command_DEL);
+				
+				return USER_REMOVED;
 			
 			case 0: break;
 			

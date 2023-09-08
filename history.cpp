@@ -1,45 +1,5 @@
 #include "history.h"
 
-int delete_user(USER user, char filename[]){
-	USER *ALL_USERS, user_from_file;
-	int num_of_users;
-	FILE *list_of_users_file;
-	int i=0;
-	
-	list_of_users_file = fopen(filename,"rb");
-	VERIFY_FILE(list_of_users_file, filename, 2);
-	
-	fseek(list_of_users_file, 0, SEEK_END);
-	num_of_users = ftell(list_of_users_file) / sizeof(USER);
-	fseek(list_of_users_file, 0, SEEK_SET);
-	
-	ALL_USERS = (USER*) malloc (sizeof(USER) * num_of_users-1);
-	
-	while(i < num_of_users-1){
-		fread(&user_from_file, sizeof(USER), 1, list_of_users_file);
-		
-		if(user_from_file.index != user.index){
-			ALL_USERS[i] = user_from_file;
-			ALL_USERS[i].index = i;
-			i++;
-		}
-	}
-	
-	fclose(list_of_users_file);
-	list_of_users_file = fopen(filename,"wb");
-	VERIFY_FILE(list_of_users_file, filename, 1);
-	
-	for(i=0; i < num_of_users-1; i++){
-		fwrite(&ALL_USERS[i], sizeof(USER), 1, list_of_users_file);
-	}
-	
-	fclose(list_of_users_file);
-	printf("\n > Usuario excluido com sucesso.");
-	CLOSE_MENU(2);
-	return USER_REMOVED;
-}
-
-
 void save_on_history (EQUATION save, char filename[FN_SIZE], EQUATION *lastops_history){
 	FILE *history_file;
 	
@@ -64,8 +24,16 @@ void print_history(int outnum, int num_of_ops, char filename[FN_SIZE]){
 		
 		if(saved_info.roots_qt<=0 && saved_info.DELTA==0) continue;
 		
-		printf("\n%d:\n %.2fxý + %.2fx + %.2f = 0\n	X1 = %.2f;\n	X2 = %.2f;\n	DELTA = %.2f;\n	roots qt = %d\n",
-			outnum-i, saved_info.A, saved_info.B, saved_info.C, saved_info.X1, saved_info.X2, saved_info.DELTA, saved_info.roots_qt);
+		printf("\n%d:\n %.2fxý + %.2fx + %.2f = 0",
+			outnum-i, saved_info.A, saved_info.B, saved_info.C);
+		
+		if(saved_info.DELTA < 0){
+			printf("\n	X1 = %.2f + %.2f * i;", saved_info.X1, saved_info.X2);
+			printf("\n	X2 = %.2f - %.2f * i;", saved_info.X1, saved_info.X2);
+		}
+		else printf("\n	X1 = %.2f;\n	X2 = %.2f;", saved_info.X1, saved_info.X2);
+		
+		printf("\n	DELTA = %.2f;\n	roots qt = %d\n", saved_info.DELTA, saved_info.roots_qt);
 	}
 	
 	fclose(history_file);
