@@ -1,14 +1,13 @@
 #include "history.h"
 
 EQ_INFO temp_history[N_LAST_OPERATIONS];
-USER *ALL_USERS;
-char curr_user_hy_name[30];
+USER current_user;
 
 void hy_create_temp_history(){
 	FILE *history_file;
 	
-	history_file = fopen(curr_user_hy_name, "rb");
-	HY_VERIFY_FILE(history_file, curr_user_hy_name);
+	history_file = fopen(current_user.history, "rb");
+	HY_VERIFY_FILE(history_file, current_user.history);
 	
 	for(int i=0; i < N_LAST_OPERATIONS; i++){
 		fread(&temp_history[i], sizeof(EQ_INFO), 1, history_file);
@@ -23,15 +22,6 @@ void hy_request_user(){
 	FILE *user_list_file;
 	
 	system("cls");
-	
-	user_list_file = fopen("user_list.dad", "rb");
-	HY_VERIFY_FILE(user_list_file, "user_list.dad");
-	
-	fseek(user_list_file, 0, SEEK_END);
-	num_of_users = ftell(user_list_file) / sizeof(USER);
-	ALL_USERS = (USER*) malloc(num_of_users * sizeof(USER));
-	
-	fclose(user_list_file);
 	
 	do{
 		printf("\n Entre na conta ou crie uma nova:\n\n (1) Entrar.\n (2) Criar.\n (0) Sair.\n\n R: ");
@@ -83,6 +73,12 @@ int hy_create_user() {
 	user_list_file = fopen("user_list.dad", "ab");
 	HY_VERIFY_FILE(user_list_file, "user_list.dad");
 	
+	fseek(user_list_file, 0, SEEK_END);
+	num_of_users = ftell(user_list_file) / sizeof(USER);
+	
+	new_user.index = num_of_users;
+	printf("\n Numero de cadastro do usuario (Num): %d\n", new_user.index);
+	
 	fwrite(&new_user, sizeof(USER), 1, user_list_file);
 	
 	printf("\n Usuario criado com sucesso!", new_user.history);
@@ -123,7 +119,10 @@ int hy_log_on_user(){
 		{
 			if(strcmp(user_from_file.password, login_password)==0)
 			{
-				strcpy(curr_user_hy_name, user_from_file.history);
+				strcpy(current_user.name, user_from_file.name);
+				strcpy(current_user.password, user_from_file.password);
+				strcpy(current_user.history, user_from_file.history);
+				current_user.index = user_from_file.index;
 				return 1;
 			}
 			
@@ -137,11 +136,108 @@ int hy_log_on_user(){
 }
 
 
+int hy_edit_user(){
+	FILE *user_list_file;
+	int r;
+	
+	system("cls");
+		
+	do{
+		printf("\n ___ INFORMACOES DO USUARIO: ___\n\n Nome: %s\n Senha: %s\n\n Historico: %s\n Numero de Cadastro: %d\n\n O que deseja alterar?\n\n (1) Nome.\n (2) Senha.\n (3) Excluir Permanentemente.\n (0) Voltar.\n\n R: ", 
+			current_user.name, current_user.password, current_user.history, current_user.index);
+		
+		scanf("%d", &r);
+		fflush(stdin);
+		
+		switch(r){
+			case 1: 
+				printf("\n > Novo nome (max: 16 caracteres): ");
+				gets(current_user.name);
+								
+				user_list_file = fopen("user_list.dad","rb+");
+				HY_VERIFY_FILE(user_list_file, "user_list.dad");
+				fseek(user_list_file, sizeof(USER)*current_user.index, SEEK_SET);
+				fwrite(&current_user, sizeof(USER), 1, user_list_file);
+				fclose(user_list_file);
+				
+				break;
+			
+			case 2:
+				printf("\n > Nova senha (max: 16 caracteres): ");
+				gets(current_user.password);
+				
+				user_list_file = fopen("user_list.dad","rb+");
+				HY_VERIFY_FILE(user_list_file, "user_list.dad");
+				fseek(user_list_file, sizeof(USER)*current_user.index, SEEK_SET);
+				fwrite(&current_user, sizeof(USER), 1, user_list_file);
+				fclose(user_list_file);
+				
+				break;
+			
+			case 3: hy_delete_user(); return 1;
+			
+			case 0: break;
+			
+			default: INVALID_ANS;
+		}
+		system("cls");
+		
+	} while(r!=0);
+	
+	return 0;
+}
+
+
+void hy_delete_user(){
+	USER *ALL_USERS, user_from_file;
+	int num_of_users;
+	FILE *user_list_file;
+	int i=0;
+	
+	user_list_file = fopen("user_list.dad","rb");
+	HY_VERIFY_FILE(user_list_file, "user_list.dad");
+	
+	fseek(user_list_file, 0, SEEK_END);
+	num_of_users = ftell(user_list_file) / sizeof(USER);
+	
+	printf("\n num_of_users is %d.\n", num_of_users);
+	
+	fseek(user_list_file, 0, SEEK_SET);
+	
+	ALL_USERS = (USER*) malloc (sizeof(USER) * num_of_users-1);
+	
+	while(i < num_of_users-1){
+		fread(&user_from_file, sizeof(USER), 1, user_list_file);
+		
+		printf("\n user_from_file has user %d (%s) (%s)\n", user_from_file.index, user_from_file.name, user_from_file.history);
+		
+		if(user_from_file.index != current_user.index){
+			ALL_USERS[i] = user_from_file;
+			printf("\n ALL_USERS[%d] has user %d (%s) (%s)\n", i, ALL_USERS[i].index, ALL_USERS[i].name, ALL_USERS[i].history);
+			ALL_USERS[i].index = i;
+			i++;
+		}
+	}
+	
+	fclose(user_list_file);
+	user_list_file = fopen("user_list.dad","wb");
+	HY_VERIFY_FILE(user_list_file, "user_list.dad");
+	
+	for(i=0; i < num_of_users-1; i++){
+		fwrite(&ALL_USERS[i], sizeof(USER), 1, user_list_file);
+	}
+	
+	fclose(user_list_file);
+	printf("\n > Usuario excluido com sucesso.");
+	CLOSE_MENU(2);
+}
+
+
 void hy_save_on_history (EQ_INFO save){
 	FILE *history_file;
 
-	history_file = fopen(curr_user_hy_name, "wb");
-	HY_VERIFY_FILE(history_file, curr_user_hy_name);
+	history_file = fopen(current_user.history, "wb");
+	HY_VERIFY_FILE(history_file, current_user.history);
 	
 	//fseek(history_file, 0, SEEK_END); // acho que essa função está sobrando...
 	
@@ -164,8 +260,8 @@ int hy_access_history(float *A, float *B, float *C){
 	float file_size;
 	int r;
 	
-	history_file = fopen(curr_user_hy_name, "rb");
-	HY_VERIFY_FILE(history_file, curr_user_hy_name);
+	history_file = fopen(current_user.history, "rb");
+	HY_VERIFY_FILE(history_file, current_user.history);
 	
 	system("cls");
 	
@@ -174,10 +270,10 @@ int hy_access_history(float *A, float *B, float *C){
 	for(int i=0; i<N_LAST_OPERATIONS; i++){
 		fread(&saved_info, sizeof(EQ_INFO), 1, history_file);
 		
-		if(saved_info.roots_qt>=0){
-			printf("\n %.2fxý + %.2fx + %.2f = 0\n	X1 = %.2f;\n	X2 = %.2f;\n	DELTA = %.2f;\n	roots qt = %d\n",
-			saved_info.A, saved_info.B, saved_info.C, saved_info.X1, saved_info.X2, saved_info.DELTA, saved_info.roots_qt);
-		}
+		if(saved_info.roots_qt<=0 && saved_info.DELTA==0) continue;
+		
+		printf("\n%d:\n %.2fxý + %.2fx + %.2f = 0\n	X1 = %.2f;\n	X2 = %.2f;\n	DELTA = %.2f;\n	roots qt = %d\n",
+		3-i, saved_info.A, saved_info.B, saved_info.C, saved_info.X1, saved_info.X2, saved_info.DELTA, saved_info.roots_qt);
 	}
 	
 	fclose(history_file);
@@ -196,23 +292,16 @@ int hy_access_history(float *A, float *B, float *C){
 			printf("\n > ");
 			
 			if(r<0 || r > N_LAST_OPERATIONS){
-				printf("Resposta invalida!\a");
-				CLOSE_MENU(2);
-				
-				break;
+				INVALID_ANS;
 			}
 			
-			hy_take_equation(r-1, A, B, C);
+			hy_take_equation(3-r, A, B, C);
 			printf("Equacao copiada!");
 			CLOSE_MENU(2);
 			
 			break;
 		
-		default: 
-			printf("Resposta invalida!\a");
-			CLOSE_MENU(2);
-			
-			break;
+		default: INVALID_ANS;
 	}
 	
     return 0;
@@ -222,8 +311,8 @@ int hy_access_history(float *A, float *B, float *C){
 void hy_delete_history (){
 	FILE *history_file;
 	
-	history_file = fopen(curr_user_hy_name, "wb");
-	HY_VERIFY_FILE(history_file, curr_user_hy_name);
+	history_file = fopen(current_user.history, "wb");
+	HY_VERIFY_FILE(history_file, current_user.history);
 	
 	fprintf(history_file, "");
 	fseek(history_file, 0, SEEK_END);

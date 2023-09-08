@@ -19,8 +19,14 @@
 		exit(-1); \
 	}
 	
+#define INVALID_ANS \
+	printf("Resposta invalida!\a"); \
+	CLOSE_MENU(2); \
+	break
+	
 
 typedef struct{
+	int index;
 	char name[17];
 	char password[17];
 	char history[30];
