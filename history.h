@@ -5,14 +5,7 @@
 #include <string.h>
 
 #include "quadratic_calculator.h"
-#include "equation_typedef.h"
-
-typedef struct{
-	char name[17];
-	char password[17];
-	char history[30];
-	
-} HY_USER;
+#include "def_macros_and_types.h"
 
 void hy_create_temp_history();
 
@@ -20,13 +13,11 @@ void hy_request_user();
 
 int hy_create_user();
 
-int hy_user_login();
+int hy_log_on_user();
 
 void hy_save_on_history (EQ_INFO save);
 
 int hy_access_history (float *A, float *B, float *C);
-
-int hy_file_verification (FILE* file);
 
 void hy_delete_history ();
 

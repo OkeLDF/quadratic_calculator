@@ -101,7 +101,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=equation_typedef.h
+FileName=def_macros_and_types.h
 CompileCpp=1
 Folder=header
 Compile=1

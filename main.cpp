@@ -1,14 +1,17 @@
 #include "quadratic_calculator.h"
 #include "history.h"
 
+#define LOG_ON 						\
+	hy_request_user();				\
+	hy_create_temp_history();		\
+	hy_take_equation(2, &A, &B, &C)
+
 int main(){
-    int r;
+    int r; // 'r' é a variável padrão para a Resposta do usuário em menus
     float A = 0, B = 0, C = 0;
     FILE *historyf;
     
-    hy_request_user();
-    hy_create_temp_history();
-    hy_take_equation(2, &A, &B, &C);
+    LOG_ON;
     
     do{
         printf("\n ___ RAIZ DE EQUA. DE SEGUNDO GRAU ___\n");
@@ -20,17 +23,13 @@ int main(){
         scanf("%d",&r);
         
         switch(r){
-            case 1: qc_insert(&A, &B, &C); break;
+            case 1: qc_insert_coefficients(&A, &B, &C); break;
                 
             case 2: qc_find_roots(A,B,C); break;
             
             case 3: hy_access_history(&A,&B,&C); break;
             
-            case 4:
-            	hy_request_user();
-            	hy_create_temp_history();
-    			hy_take_equation(2, &A, &B, &C);
-				break;
+            case 4: LOG_ON; break;
             
             case 0: break;
                 
