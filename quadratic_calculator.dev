@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=10
+UnitCount=12
 
 [VersionInfo]
 Major=1
@@ -142,6 +142,26 @@ BuildCmd=
 
 [Unit10]
 FileName=menus.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=security.cpp
+CompileCpp=1
+Folder=source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit12]
+FileName=security.h
 CompileCpp=1
 Folder=header
 Compile=1
